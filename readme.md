@@ -1,5 +1,7 @@
 # can-model-cached
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-model-cached.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/canjs/can-model-cached.png?branch=master)](https://travis-ci.org/canjs/can-model-cached)
 
 Cache models
