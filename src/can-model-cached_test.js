@@ -4,8 +4,8 @@ require('steal-qunit');
 
 var Task;
 QUnit.module('can/model/cached');
-test('findAll', function () {
-	stop();
+QUnit.test('findAll', function(assert) {
+	var done = assert.async();
 	var numRequests = 0,
 		origDelay = can.fixture.delay;
 	can.fixture.delay = 500;
@@ -35,17 +35,17 @@ test('findAll', function () {
 	Task.findAll({}, function (tasks) {
 		setTimeout(function () {
 			Task.findAll({}, function (secondTasks) {
-				deepEqual(tasks.attr(), secondTasks.attr());
+				assert.deepEqual(tasks.attr(), secondTasks.attr());
 				secondTasks.bind('change', function () {
 					can.fixture.delay = origDelay;
-					start();
+					done();
 				});
 			});
 		}, 13);
 	});
 });
-test('findOne', function () {
-	stop();
+QUnit.test('findOne', function(assert) {
+	var done = assert.async();
 	var numRequests = 0,
 		origDelay = can.fixture.delay;
 	can.fixture.delay = 500;
@@ -73,19 +73,19 @@ test('findOne', function () {
 			Task.findOne({
 				id: 1
 			}, function (secondTask) {
-				deepEqual(task.attr(), secondTask.attr());
+				assert.deepEqual(task.attr(), secondTask.attr());
 				secondTask.bind('change', function (ev, attr) {
 					if (attr !== 'updated') {
 						can.fixture.delay = origDelay;
-						start();
+						done();
 					}
 				});
 			});
 		}, 13);
 	});
 });
-test('findAll and findOne', function () {
-	stop();
+QUnit.test('findAll and findOne', function(assert) {
+	var done = assert.async();
 	var origDelay = can.fixture.delay;
 	can.fixture.delay = 500;
 	can.fixture('/tasks', function () {
@@ -113,19 +113,19 @@ test('findAll and findOne', function () {
 			Task.findOne({
 				id: 1
 			}, function (task) {
-				deepEqual(tasks[0].attr(), task.attr());
+				assert.deepEqual(tasks[0].attr(), task.attr());
 				task.bind('change', function (ev, attr) {
 					if (attr !== 'updated') {
 						can.fixture.delay = origDelay;
-						start();
+						done();
 					}
 				});
 			});
 		}, 13);
 	});
 });
-test('destroy', function () {
-	stop();
+QUnit.test('destroy', function(assert) {
+	var done = assert.async();
 	var TASKS = [{
 		id: 1,
 		name: 'first'
@@ -148,9 +148,9 @@ test('destroy', function () {
 	Task.findAll({}, function (tasks) {
 		tasks[0].destroy(function () {
 			Task.findAll({}, function (tasks2) {
-				equal(tasks2.length, 1);
-				equal(tasks2[0].name, 'second');
-				start();
+				assert.equal(tasks2.length, 1);
+				assert.equal(tasks2[0].name, 'second');
+				done();
 			});
 		});
 	});
